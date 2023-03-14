@@ -1,5 +1,5 @@
 # serialz
-A tiny python package for serializing class data as `json`, `pkl` or in a `shelve` database
+A tiny python package for (de)serializing class data from/to `json`, `pkl` or an entry in a `shelve` database
 
 
 ### info:
