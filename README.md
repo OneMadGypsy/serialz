@@ -42,7 +42,11 @@ In `serialz.py` is a constant named `ROOT`. This is the name of the subfolder, w
 
 ```python3
 from dataclasses import dataclass, InitVar
-from serialz import DBClass
+
+#you could use any one of these as the `super` below
+#and the only thing that would change is how the serialized data is formatted
+#usage across these classes is identical
+from serialz import DBClass, JSONClass, PKLClass
 
 
 @dataclass
