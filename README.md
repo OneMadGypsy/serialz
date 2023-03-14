@@ -38,7 +38,9 @@ class Entity(DBClass):
         DBClass.__init__(self, self.name, autoload, overwrite)
         
         
-p = Entity('Rect_1', 0, 0, 100, 100)
+#nothig is any different than how you generally make classes
+#you simply also have (auto)save and (auto)load serialization features
+ent = Entity('Rect_1', 0, 0, 100, 100)
 ```
 
 
