@@ -3,9 +3,17 @@ A tiny python package for (de)serializing class data from/to `json`, `pkl` or an
 
 
 ### info:
-You can extend `JSONClass`, `PKLClass` or `DBClass` to save/load your class to/from `json`, `pkl` or `shelve` database (respectively). All classes have identical interfaces. If the serialization data does not exist when the class is instanced, it will create it. If the serialization data does exist, and `autoload` is `True`, the class will be instanced with the deserialized data, regardless of the init data. You can `save()`, `load()` or `delete()` at any time.
 
 The system works by serializing the class `__dict__` (save), and updating the class `__dict__` with deserialized data (load).
+
+You can extend `JSONClass`, `PKLClass` or `DBClass` to save/load your class to/from `json`, `pkl` or `shelve` database (respectively). If the serialization data does not exist when the class is instanced, it will create it. If the serialization data does exist, and `autoload` is `True`, the class will be instanced with the deserialized data, regardless of the init data. You can `save()`, `load()` or `delete()` at any time.
+
+All 3 serialization classes have the same interface
+| argument  | description                                    | default |
+| --------- |:---------------------------------------------- |:------- |
+| id        | becomes file name or database entry name       | None    |
+| autoload  | True/False autoload when instanced             | True    |
+| overwrite | True/False overwrite saved data when instanced | False   |
 
 
 ### features:
@@ -15,6 +23,7 @@ The system works by serializing the class `__dict__` (save), and updating the cl
 * optionally autoload saved state when class is instanced
 * optionally overwrite saved state when class is instanced
 * data destinations are internally created/managed
+
 
 
 ### example:
