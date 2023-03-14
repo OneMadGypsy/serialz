@@ -31,7 +31,7 @@ ____
 
 In `serialz.py` is a constant named `ROOT`. This is the name of the subfolder, within the CWD, that will be used to store serialized data. The default is "data". Subfolders are created within `ROOT` directory, named after the `type` of the serializers subclass. Below are possible destinations, based on a serializer subclass named `Entity` with an `id` of `"default"`.
 
-| class         | destinations                                           |
+| class         | destination                                            |
 |:------------- |:------------------------------------------------------ |
 | **JSONClass** | `f'{os.getcwd()}/data/Entity/default.json'`            |
 | **PKLClass**  | `f'{os.getcwd()}/data/Entity/default.pkl'`             |
