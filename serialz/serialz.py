@@ -1,4 +1,5 @@
 import os, json, pickle, shelve
+from typing import Callable
 
 #folder within CWD to be used for data storage
 #will be created if it doesn't exist
@@ -10,6 +11,13 @@ class SerialClass:
     DESTINATION_MSG = ('\n\tself.destname must be set in SerialClass subclass'
                        '\n\tthis should involve self._id or self._type (depending on serializer style)')
     
+    #decorator for IO
+    def voodoo(func:Callable) -> Callable:
+        def inner(self):
+            if not self.__path: raise Exception(SerialClass.DESTINATION_MSG)
+            func(self)
+        return inner
+        
     @property       #return full path
     def dest(self) -> str:
         return self.__path
@@ -42,15 +50,7 @@ class SerialClass:
         #type directory create 
         if not os.path.isdir(self.__loc):
             os.mkdir(self.__loc)
-            
-    def save(self):
-        if not self.__path:
-            raise Exception(SerialClass.DESTINATION_MSG)
         
-    def load(self):
-        if not self.__path:
-            raise Exception(SerialClass.DESTINATION_MSG)
-
 
 #saved as: {root}/{type}/{id}.json
 class JSONClass(SerialClass):
@@ -68,14 +68,18 @@ class JSONClass(SerialClass):
         #load json
         if autoload: self.load()
 
+    @SerialClass.voodoo
     def save(self) -> None:
-        super().save()
         json.dump(self.__dict__, open(self.dest, "w"))
 
+    @SerialClass.voodoo
     def load(self) -> None:
-        super().load()
         self.__dict__.update(json.load(open(self.dest, "r")))
-        
+     
+    @SerialClass.voodoo 
+    def delete(self) -> None:
+        os.remove(self.dest)
+
 
 #saved as: {root}/{type}/{id}.pkl
 class PKLClass(SerialClass):
@@ -93,13 +97,17 @@ class PKLClass(SerialClass):
         #load pkl
         if autoload: self.load()
 
+    @SerialClass.voodoo
     def save(self) -> None:
-        super().save()
         pickle.dump(self.__dict__, open(self.dest, "wb"))
 
+    @SerialClass.voodoo
     def load(self) -> None:
-        super().load()
         self.__dict__.update(pickle.load(open(self.dest, "rb")))
+
+    @SerialClass.voodoo
+    def delete(self) -> None:
+        os.remove(self.dest)
 
 
 #saved as: ({root}/{type}/{type}_db)[id]    
@@ -123,18 +131,19 @@ class DBClass(SerialClass):
             #load entry
             if autoload and entry: self.__dict__.update(entry)
                 
+    @SerialClass.voodoo
     def save(self) -> None:
-        super().save()
         with shelve.open(self.dest) as db:
             db[self.id] = self.__dict__
 
+    @SerialClass.voodoo
     def load(self) -> None:
-        super().load()
         with shelve.open(self.dest) as db:
             if (entry := db.get(self.id)):
                 self.__dict__.update(entry)
+      
+    @SerialClass.voodoo         
+    def delete(self):
+        with shelve.open(self.dest) as db:
+            if db.get(self.id): del db[self.id]
 
-    
-
-
-            
