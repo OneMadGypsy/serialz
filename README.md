@@ -14,7 +14,7 @@ The system works by serializing the class `__dict__` (save), and updating the cl
 * delete file or database entry 
 * optionally autoload saved state when class is instanced
 * optionally overwrite saved state when class is instanced
-* paths are internally managed based on subclass type and id
+* data destinations are internally created/managed
 
 
 ### example:
