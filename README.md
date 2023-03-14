@@ -18,12 +18,16 @@ The system works by serializing the class `__dict__` (save), and updating the cl
 
 You can extend `JSONClass`, `PKLClass` or `DBClass` to save/load your class to/from `json`, `pkl` or `shelve` database (respectively). If the serialization data does not exist when the class is instanced, it will create it. If the serialization data does exist, and `autoload` is `True`, the class will be instanced with the deserialized data, regardless of the init data. You can `save()`, `load()` or `delete()` at any time.
 
+____
+
 All 3 serialization classes have the same interface
 | argument  | description                                    | default |
 | --------- |:---------------------------------------------- |:------- |
 | id        | becomes file name or database entry name       | None    |
 | autoload  | True/False autoload when instanced             | True    |
 | overwrite | True/False overwrite saved data when instanced | False   |
+
+____
 
 In `serialz.py` is a constant named `ROOT`. This is the name of the folder wthin the CWD that will be used to store serialized data. The default is "data". Subfolders are created within this directory, named after the `type` of the serializers subclass. Below are possible destinations, based on a serializer subclass named `Entity` with an `id` of `"default"`.
 
