@@ -31,6 +31,7 @@ class Entity(DBClass):
     height :int
     
     #serializer init vars
+    #since InitVar is used, vars will not be available for serialization
     autoload  :InitVar = True
     overwrite :InitVar = False
     
