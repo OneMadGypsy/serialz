@@ -5,6 +5,8 @@ A tiny python package for serializing class data as `json`, `pkl` or in a `shelv
 ### info:
 You can extend `JSONClass`, `PKLClass` or `DBClass` to save/load your class to/from `json`, `pkl` or `shelve` database (respectively). All classes have identical interfaces. If the serialization data does not exist when the class is instanced it will create it. If the serialization data does exist, and `autoload` is `True`, the class will be instanced with the serialized data regardless of the init data. `save` or `load` at any time by simply calling `.save()` or `.load()` ~ neither method accepts arguments.
 
+The system works by serializing the class `__dict__` (save), and deserializing the data to the class `__dict__` (load)
+
 
 ### features:
 * serialize classes as `json`, `pkl` or in a `shelve` database.
