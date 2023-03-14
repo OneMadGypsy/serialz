@@ -59,6 +59,7 @@ class Entity(DBClass):
     
     #serializer init vars
     #since InitVar is used, these vars will not be available for serialization
+    #which is perfect, because you don't want these to get saved
     autoload  :InitVar = True
     overwrite :InitVar = False
     
