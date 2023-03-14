@@ -14,7 +14,7 @@ A tiny python package for (de)serializing class data from/to `json`, `pkl` or an
 
 ## info:
 
-The system works by serializing the class `__dict__` (save), and updating the class `__dict__` with deserialized data (load).
+The system works by (de)serializing data to/from the class `__dict__`.
 
 You can extend `JSONClass`, `PKLClass` or `DBClass` to save/load your class to/from `json`, `pkl` or `shelve` database (respectively). If the serialization data does not exist when the class is instanced, it will create it. If the serialization data does exist, and `autoload` is `True`, the class will be instanced with the deserialized data, regardless of the init data. You can `save()`, `load()` or `delete()` at any time.
 
