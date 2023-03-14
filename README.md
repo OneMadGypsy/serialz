@@ -25,6 +25,11 @@ All 3 serialization classes have the same interface
 | autoload  | True/False autoload when instanced             | True    |
 | overwrite | True/False overwrite saved data when instanced | False   |
 
+In `serialz.py` is a constant named `ROOT`. This is the name of the folder wthin the CWD that will be used to store serialized data. The default is "data". Subfolders are created within this directory, named after the `type` of the serializers subclass. If the serializer is a file type, the file will be stroed as `f"{id}.ext"`, where "ext" will be either `json` or `pkl`. If the seriaalizer is a database type, `id` will be used as a key on a database named `f'{type}_db'`. Below are possible destinations, based on a serializer subclass named `Entity` with an `id` of `"default"`.
+
+* `f'{os.getcwd()}/data/Entity/default.json'`
+* `f'{os.getcwd()}/data/Entity/default.pkl'`
+* (`f'{os.getcwd()}/data/Entity/Entity_db'`)["default"]
 
 
 ## example:
