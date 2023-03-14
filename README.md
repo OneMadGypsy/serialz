@@ -2,7 +2,17 @@
 A tiny python package for (de)serializing class data from/to `json`, `pkl` or an entry in a `shelve` database
 
 
-### info:
+### features:
+* serialize classes as `json`, `pkl` or in a `shelve` database (save)
+* deserialize `json`, `pkl` or a database entry to class       (load)
+* delete file or database entry 
+* optionally autoload saved state when class is instanced
+* optionally overwrite saved state when class is instanced
+* data destinations are internally created/managed
+
+
+
+## info:
 
 The system works by serializing the class `__dict__` (save), and updating the class `__dict__` with deserialized data (load).
 
@@ -16,17 +26,8 @@ All 3 serialization classes have the same interface
 | overwrite | True/False overwrite saved data when instanced | False   |
 
 
-### features:
-* serialize classes as `json`, `pkl` or in a `shelve` database (save)
-* deserialize `json`, `pkl` or a database entry to class       (load)
-* delete file or database entry 
-* optionally autoload saved state when class is instanced
-* optionally overwrite saved state when class is instanced
-* data destinations are internally created/managed
 
-
-
-### example:
+## example:
 
 ```python3
 from dataclasses import dataclass, InitVar
@@ -47,14 +48,14 @@ class Entity(DBClass):
     overwrite :InitVar = False
     
     def __post_init__(self, autoload:bool, overwrite:bool):
-        #JSONClass and PKLClass are instanced in an identical manner
         DBClass.__init__(self, self.name, autoload, overwrite)
         
         
-#nothing is any different than how you generally instance classes
-#you simply also have save, (auto)load, and delete features
-
 ent = Entity('Rect_1', 0, 0, 100, 100)
+#...
+ent.width  = 200
+ent.height = 200
+ent.save()
 ```
 
 
