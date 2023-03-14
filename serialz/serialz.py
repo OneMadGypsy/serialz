@@ -10,11 +10,13 @@ class SerialClass:
     SUBCLASS_MSG    = '{} must be instanced through a subclass.'
     DESTINATION_MSG = ('\n\tself.destname must be set in SerialClass subclass'
                        '\n\tthis should involve self._id or self._type (depending on serializer style)')
+    DNE_MSG         = '{} does not exist'
     
     #decorator for IO
-    def voodoo(func:Callable) -> Callable:
+    def ioready(func:Callable) -> Callable:
         def inner(self):
-            if not self.__path: raise Exception(SerialClass.DESTINATION_MSG)
+            if not self.dest                : raise Exception(SerialClass.DESTINATION_MSG)
+            if not os.path.isfile(self.dest): raise IOError(SerialClass.DNE_MSG.format(self.dest))
             func(self)
         return inner
         
@@ -68,15 +70,15 @@ class JSONClass(SerialClass):
         #load json
         if autoload: self.load()
 
-    @SerialClass.voodoo
+    @SerialClass.ioready
     def save(self) -> None:
         json.dump(self.__dict__, open(self.dest, "w"))
 
-    @SerialClass.voodoo
+    @SerialClass.ioready
     def load(self) -> None:
         self.__dict__.update(json.load(open(self.dest, "r")))
      
-    @SerialClass.voodoo 
+    @SerialClass.ioready 
     def delete(self) -> None:
         os.remove(self.dest)
 
@@ -97,15 +99,15 @@ class PKLClass(SerialClass):
         #load pkl
         if autoload: self.load()
 
-    @SerialClass.voodoo
+    @SerialClass.ioready
     def save(self) -> None:
         pickle.dump(self.__dict__, open(self.dest, "wb"))
 
-    @SerialClass.voodoo
+    @SerialClass.ioready
     def load(self) -> None:
         self.__dict__.update(pickle.load(open(self.dest, "rb")))
 
-    @SerialClass.voodoo
+    @SerialClass.ioready
     def delete(self) -> None:
         os.remove(self.dest)
 
@@ -131,19 +133,23 @@ class DBClass(SerialClass):
             #load entry
             if autoload and entry: self.__dict__.update(entry)
                 
-    @SerialClass.voodoo
+    @SerialClass.ioready
     def save(self) -> None:
         with shelve.open(self.dest) as db:
             db[self.id] = self.__dict__
 
-    @SerialClass.voodoo
+    @SerialClass.ioready
     def load(self) -> None:
         with shelve.open(self.dest) as db:
             if (entry := db.get(self.id)):
                 self.__dict__.update(entry)
       
-    @SerialClass.voodoo         
+    @SerialClass.ioready         
     def delete(self):
         with shelve.open(self.dest) as db:
             if db.get(self.id): del db[self.id]
 
+    
+
+
+            
