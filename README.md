@@ -43,7 +43,8 @@ class Entity(DBClass):
         
         
 #nothing is any different than how you generally instance classes
-#you simply also have save and (auto)load serialization features
+#you simply also have save, (auto)load, and delete features
+
 ent = Entity('Rect_1', 0, 0, 100, 100)
 ```
 
