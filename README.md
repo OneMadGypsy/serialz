@@ -3,9 +3,9 @@ A tiny python package for (de)serializing class data from/to `json`, `pkl` or an
 
 
 ### features:
-* **save**: serialize class as `json`, `pkl` or as a `shelve` database entry
+* **save**: serialize class as `json`, `pkl` or a `shelve` database entry
 * **load**: deserialize `json`, `pkl` or a database entry to class
-* **delete**: file or database entry 
+* **delete**: file (`json`, `pkl`) or database entry 
 * optionally autoload saved state when class is instanced
 * optionally overwrite saved state when class is instanced
 * data destinations are internally created/managed
