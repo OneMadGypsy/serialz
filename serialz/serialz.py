@@ -163,4 +163,3 @@ class DBClass(SerialClass):
         with shelve.open(self.dest) as db:
             if db.get(self.id): del db[self.id]
 
-       
