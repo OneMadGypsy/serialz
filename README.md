@@ -9,6 +9,7 @@ A tiny python package for (de)serializing class data from/to `json`, `pkl` or an
 * optionally autoload saved state when class is instanced
 * optionally overwrite saved state when class is instanced
 * data destinations are internally created/managed
+* unpicklicking is restricted to `(bool, int, float, str, list, tuple, dict, set)`
 
 
 
@@ -37,6 +38,9 @@ In `serialz.py` is a constant named `ROOT`. This is the name of the subfolder, w
 | **PKLClass**  | `f'{os.getcwd()}/data/Entity/default.pkl'`             |
 | **DBClass**   | (`f'{os.getcwd()}/data/Entity/Entity_db'`)["default"]  |
 
+____
+
+In `serialz.py` is a constant named `UNRESTRICTED`. This is used by the unpickler as a filter of allowed types to unpickle. It is currently set as `(bool, int, float, str, list, tuple, dict, set)`
 
 ## example:
 
