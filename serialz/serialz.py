@@ -69,7 +69,7 @@ class SerialzUnpickler(pickle.Unpickler):
 
 #saved as: {root}/{type}/{id}.json
 class JSONClass(SerialClass):
-    def __init__(self, id:str, autoload:bool=True, overwrite=False):
+    def __init__(self, id:str, autoload:bool=True, overwrite:bool=False):
         SerialClass.__init__(self, id, JSONClass)
             
         #set filename
@@ -98,7 +98,7 @@ class JSONClass(SerialClass):
 
 #saved as: {root}/{type}/{id}.pkl
 class PKLClass(SerialClass):
-    def __init__(self, id:str, autoload:bool=True, overwrite=False):
+    def __init__(self, id:str, autoload:bool=True, overwrite:bool=False):
         SerialClass.__init__(self, id, PKLClass)
             
         #set filename
@@ -128,7 +128,7 @@ class PKLClass(SerialClass):
 
 #saved as: ({root}/{type}/{type}_db)[id]    
 class DBClass(SerialClass):
-    def __init__(self, id:str, autoload:bool=True, overwrite=False):
+    def __init__(self, id:str, autoload:bool=True, overwrite:bool=False):
         SerialClass.__init__(self, id, DBClass)
     
         #set database name
@@ -159,8 +159,6 @@ class DBClass(SerialClass):
                 self.__dict__.update(entry)
       
     @SerialClass.ioready         
-    def delete(self):
+    def delete(self) -> None:
         with shelve.open(self.dest) as db:
-            if db.get(self.id): 
-                del db[self.id]
-
+            if db.get(self.id): del db[self.id]
