@@ -16,6 +16,7 @@ class SerialClass:
     DESTINATION_MSG = ('\n\tself.destname must be set in SerialClass subclass'
                        '\n\tthis should involve self._id or self._type (depending on serializer style)')
     DNE_MSG         = '{} does not exist'
+    WRONGTYPE_MSG   = 'loaded data must always be of type dict (current type:{})'
     
     #decorator for IO
     def ioready(func:Callable) -> Callable:
@@ -32,6 +33,11 @@ class SerialClass:
     @dest.setter    #set path with destname joined to location
     def destname(self, name:str) -> None:
         self.__path = os.path.join(self.__loc, name)
+        
+    #update self.__dict__ if data is compatible
+    def update(self, data:dict) -> None:
+        if not isinstance(data, dict): raise ValueError(SerialClass.WRONGTYPE_MSG.format(type(data)))
+        self.__dict__.update(data)
 
     def __init__(self, id:str, baseclass:type):
         #store id
@@ -89,7 +95,8 @@ class JSONClass(SerialClass):
 
     @SerialClass.ioready
     def load(self) -> None:
-        self.__dict__.update(json.load(open(self.dest, "r")))
+        if (data := json.load(open(self.dest, "r"))):
+            self.update(data)
      
     @SerialClass.ioready 
     def delete(self) -> None:
@@ -120,8 +127,8 @@ class PKLClass(SerialClass):
     def load(self) -> None:
         with open(self.dest, "rb") as pkl:
             iobytes = io.BytesIO(pkl.read())
-            if (ldr := SerialzUnpickler(iobytes).load()):
-                self.__dict__.update(ldr)
+            if (data := SerialzUnpickler(iobytes).load()):
+                self.update(data)
 
     @SerialClass.ioready
     def delete(self) -> None:
@@ -158,7 +165,7 @@ class DBClass(SerialClass):
     def load(self) -> None:
         with shelve.open(self.dest) as db:
             if (entry := db.get(self.id)):
-                self.__dict__.update(entry)
+                self.update(entry)
       
     @SerialClass.ioready         
     def delete(self) -> None:
