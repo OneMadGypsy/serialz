@@ -1,6 +1,5 @@
-import io, os, json, pickle, shelve
+import builtins, io, os, json, pickle, shelve
 from typing import Callable
-import builtins
 
 
 #folder within CWD to be used for data storage
