@@ -1,13 +1,14 @@
 import builtins, io, os, json, pickle, shelve
 from typing import Callable
+from glob   import glob
 
 
-#folder within CWD to be used for data storage
+#subfolder of CWD to be used for data storage
 #will be created if it doesn't exist
-ROOT         = 'data'
+ROOT    = 'data'
 
-#unpickle allowed types
-UNRESTRICTED = (type, bool, int, float, str, bytes, bytearray, list, tuple, dict, set)
+#allowed types for unpickling
+ALLOWED = (type, bool, int, float, str, bytes, bytearray, list, tuple, dict, set)
 
 #serializer base
 class SerialClass:
@@ -18,11 +19,11 @@ class SerialClass:
     
     #decorator for IO
     def ioready(func:Callable) -> Callable:
-        def inner(self):
-            if not self.dest                : raise Exception(SerialClass.DESTINATION_MSG)
-            if not os.path.isfile(self.dest): raise IOError(SerialClass.DNE_MSG.format(self.dest))
+        def ready(self):
+            if not self.dest            : raise Exception(SerialClass.DESTINATION_MSG)
+            if not glob(f'{self.dest}*'): raise IOError(SerialClass.DNE_MSG.format(self.dest))
             func(self)
-        return inner
+        return ready
         
     @property       #return full path
     def dest(self) -> str:
@@ -61,7 +62,7 @@ class SerialClass:
 #restrict pickle to base types  
 class SerialzUnpickler(pickle.Unpickler):
     def find_class(self, module, name):
-        if module == 'builtins' and name in UNRESTRICTED:
+        if module == 'builtins' and name in ALLOWED:
             return getattr(builtins, name)
         return None
         
@@ -160,5 +161,6 @@ class DBClass(SerialClass):
     @SerialClass.ioready         
     def delete(self):
         with shelve.open(self.dest) as db:
-            if db.get(self.id): del db[self.id]
+            if db.get(self.id): 
+                del db[self.id]
 
