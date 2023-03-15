@@ -1,9 +1,14 @@
-import os, json, pickle, shelve
+import io, os, json, pickle, shelve
 from typing import Callable
+import builtins
+
 
 #folder within CWD to be used for data storage
 #will be created if it doesn't exist
-ROOT = 'data'
+ROOT         = 'data'
+
+#unpickle allowed types
+UNRESTRICTED = (bool, int, float, str, list, tuple, dict)
 
 #serializer base
 class SerialClass:
@@ -52,6 +57,14 @@ class SerialClass:
         #type directory create 
         if not os.path.isdir(self.__loc):
             os.mkdir(self.__loc)
+            
+
+#restrict pickle to base types  
+class SerialzUnpickler(pickle.Unpickler):
+    def find_class(self, module, name):
+        if module == 'builtins' and name in UNRESTRICTED:
+            return getattr(builtins, name)
+        return None
         
 
 #saved as: {root}/{type}/{id}.json
@@ -64,7 +77,7 @@ class JSONClass(SerialClass):
         
         #json overwrite or create
         if overwrite or not os.path.isfile(self.dest):
-            self.save()
+            json.dump(self.__dict__, open(self.dest, "w"))
             return #skip loading
             
         #load json
@@ -93,7 +106,7 @@ class PKLClass(SerialClass):
         
         #pkl overwrite or create
         if overwrite or not os.path.isfile(self.dest):
-            self.save()
+            pickle.dump(self.__dict__, open(self.dest, "wb"))
             return #skip loading
             
         #load pkl
@@ -105,7 +118,8 @@ class PKLClass(SerialClass):
 
     @SerialClass.ioready
     def load(self) -> None:
-        self.__dict__.update(pickle.load(open(self.dest, "rb")))
+        if (ldr := SerialzUnpickler(io.BytesIO(open(self.dest, "rb").read())).load()):
+            self.__dict__.update(ldr)
 
     @SerialClass.ioready
     def delete(self) -> None:
@@ -149,7 +163,4 @@ class DBClass(SerialClass):
         with shelve.open(self.dest) as db:
             if db.get(self.id): del db[self.id]
 
-    
-
-
-            
+       
