@@ -118,8 +118,10 @@ class PKLClass(SerialClass):
 
     @SerialClass.ioready
     def load(self) -> None:
-        if (ldr := SerialzUnpickler(io.BytesIO(open(self.dest, "rb").read())).load()):
-            self.__dict__.update(ldr)
+        with open(self.dest, "rb") as pkl:
+            iobytes = io.BytesIO(pkl.read())
+            if (ldr := SerialzUnpickler(iobytes).load()):
+                self.__dict__.update(ldr)
 
     @SerialClass.ioready
     def delete(self) -> None:
@@ -162,3 +164,4 @@ class DBClass(SerialClass):
     def delete(self) -> None:
         with shelve.open(self.dest) as db:
             if db.get(self.id): del db[self.id]
+
