@@ -48,7 +48,7 @@ In `serialz.py` is a constant named `ALLOWED`. This is used by the unpickler as 
 from dataclasses import dataclass, InitVar
 
 #you could use any one of these as the `super` below
-#and the only thing that would change is how the serialized data is formatted
+#and the only thing that would change is the serialization format
 #usage across these classes is identical
 from serialz import DBClass, JSONClass, PKLClass
 
