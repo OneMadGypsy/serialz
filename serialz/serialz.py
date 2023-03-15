@@ -8,7 +8,7 @@ import builtins
 ROOT         = 'data'
 
 #unpickle allowed types
-UNRESTRICTED = (bool, int, float, str, list, tuple, dict)
+UNRESTRICTED = (bool, int, float, str, bytes, bytearray, list, tuple, dict, set)
 
 #serializer base
 class SerialClass:
