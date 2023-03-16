@@ -1,4 +1,4 @@
-# serialz
+3# serialz
 A tiny python package for (de)serializing class data from/to `json`, `pkl` or an entry in a `shelve` database
 
 
@@ -40,7 +40,7 @@ In `serialz.py` is a constant named `ROOT`. This is the name of the subfolder, w
 
 ____
 
-In `serialz.py` is a constant named `ALLOWED`. This is used by the unpickler as a filter of allowed types to unpickle. It is currently set as `(type, bool, int, float, str, bytes, bytearray, list, tuple, dict, set)`
+In `serialz.py` is a constant named `ALLOWED`. This is used by the unpickler as a filter of allowed types to unpickle. It is currently set as:<br /> `(type, bool, int, float, str, bytes, bytearray, list, tuple, dict, set)`
 
 ## example:
 
