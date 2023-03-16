@@ -28,6 +28,11 @@ All 3 serialization classes have the same interface
 | autoload  | True/False autoload when instanced             | True    |
 | overwrite | True/False overwrite saved data when instanced | False   |
 
+### ex:
+```python3
+PKLClass.__init__(self, id, autoload, overwrite)
+```
+
 ____
 
 In `serialz.py`, `ROOT` is the name of the subfolder, within the CWD, that will be used to store serialized data. The default is: `ROOT = "data"`. Subfolders are created within `ROOT` directory, named after the `type` of the serializers subclass. Below are possible destinations, based on a serializer subclass named `Entity` with an `id` of `"default"`.
