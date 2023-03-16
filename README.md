@@ -13,7 +13,7 @@ A tiny python package for (de)serializing class data from/to `json`, `pkl` or an
 
 
 
-## info:
+## docs:
 
 The system works by (de)serializing data to/from the class `__dict__`.
 
