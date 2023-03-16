@@ -24,7 +24,7 @@ ____
 All 3 serialization classes have the same interface
 | argument  | description                                    | default |
 | --------- |:---------------------------------------------- |:------- |
-| id        | becomes file name or database entry name       | None    |
+| id        | becomes file name or database entry name       | not set |
 | autoload  | True/False autoload when instanced             | True    |
 | overwrite | True/False overwrite saved data when instanced | False   |
 
