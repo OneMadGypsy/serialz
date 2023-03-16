@@ -30,7 +30,7 @@ All 3 serialization classes have the same interface
 
 ____
 
-In `serialz.py` is a constant named `ROOT`. This is the name of the subfolder, within the CWD, that will be used to store serialized data. The default is "data". Subfolders are created within `ROOT` directory, named after the `type` of the serializers subclass. Below are possible destinations, based on a serializer subclass named `Entity` with an `id` of `"default"`.
+In `serialz.py`, `ROOT` is the name of the subfolder, within the CWD, that will be used to store serialized data. The default is: `ROOT = "data"`. Subfolders are created within `ROOT` directory, named after the `type` of the serializers subclass. Below are possible destinations, based on a serializer subclass named `Entity` with an `id` of `"default"`.
 
 | class         | destination                                            |
 |:------------- |:------------------------------------------------------ |
@@ -40,7 +40,11 @@ In `serialz.py` is a constant named `ROOT`. This is the name of the subfolder, w
 
 ____
 
-In `serialz.py` is a constant named `ALLOWED`. This is used by the unpickler as a filter of allowed types to unpickle. It is currently set as:<br /> `(type, bool, int, float, str, bytes, bytearray, list, tuple, dict, set)`
+In `serialz.py`, `ALLOWED` is used by the unpickler as a filter of allowed types to unpickle. It is currently set as:<br /> 
+
+```python3
+ALLOWED = (type, bool, int, float, str, bytes, bytearray, list, tuple, dict, set)
+```
 
 ## example:
 
