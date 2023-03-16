@@ -74,7 +74,7 @@ ent = Entity('Rect_1', 0, 0, 100, 100)
 #...
 ent.width  = 200
 ent.height = 200
-ent.save()
+ent.save() #saved to: (CWD/data/Entity/Entity_db)["Rect_1"]
 ```
 
 
